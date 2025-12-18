@@ -141,14 +141,96 @@
     
     // I am populating the array with variations of your core requirements to reach 100
     const rawData = [
-        { type: "Simple Interest", templates: ["A bridge loan for $#,### at #% for # months.", "Borrowed $#,### from a friend, paying back $### interest in one lump sum."] },
-        { type: "Compound FV", templates: ["You put $#,### in a CD for # years at #% compounded monthly. What is the total?", "A $#,### investment grows at #% daily for # years. Find the future balance."] },
-        { type: "Compound PV", templates: ["How much is needed today to have $#,### in # years at #% compounded quarterly?", "Find the present value of $#,### due in # years discounted at #% compounded semi-annually."] },
-        { type: "Ordinary Annuity FV", templates: ["Deposit $### at the end of every month for # years at #%.", "A sinking fund requires $#,### at the end of each year for # years at #%."] },
-        { type: "Annuity Due FV", templates: ["Start saving $### at the beginning of every month starting today for # years.", "Lease payments of $### are made at the start of each month into an interest-bearing account."] },
-        { type: "Ordinary Annuity PV", templates: ["You want to withdraw $#,### at the end of each month for # years of retirement.", "A lottery payout pays $#,### at the end of each year for # years. What's it worth now?"] },
-        { type: "Ordinary Annuity Pmt (FV)", templates: ["To save $##,### in # years, what end-of-month deposit is required at #%?", "Goal: $###,### for a house in # years. Find the required quarterly payment."] },
-        { type: "Ordinary Annuity Pmt (PV)", templates: ["Monthly payment for a $##,### car loan at #% for # years.", "A mortgage of $###,### at #% for 30 years. Find the monthly payment."] }
+        const rawData = [
+        { 
+            type: "Simple Interest", 
+            templates: [
+                "A payday loan for $#,### charges a flat interest fee of $### after two weeks.",
+                "Calculate the interest on a $#,### personal loan at #% annual interest for # months with no compounding.",
+                "A T-bill pays #% flat annual interest on a $##,### investment for one year.",
+                "A pawn shop charges $### interest on a $#,### loan held for 30 days.",
+                "You lend a friend $#,###; they pay you back the principal plus $### in simple interest.",
+                "Find the interest earned on a #% simple interest savings certificate over # years on a $#,### deposit."
+            ] 
+        },
+        { 
+            type: "Compound FV", 
+            templates: [
+                "You put $#,### in a CD for # years at #% compounded monthly. What is the total?",
+                "A $#,### investment grows at #% daily for # years. Find the future balance.",
+                "Inflation is #% per year. If a car costs $##,### now, what will it cost in # years?",
+                "A corporate bond grows from $#,### at a rate of #% compounded semi-annually for # years.",
+                "A 'set it and forget it' fund of $#,### earns #% compounded quarterly for # years.",
+                "If property values rise #% per year (compounded annually), what is a $###,### house worth in # years?"
+            ] 
+        },
+        { 
+            type: "Compound PV", 
+            templates: [
+                "How much is needed today to have $##,### in # years at #% compounded quarterly?",
+                "Find the present value of $#,### due in # years discounted at #% compounded semi-annually.",
+                "To have a $###,### nest egg in # years, what single lump sum must be saved now at #% monthly?",
+                "A business wants $##,### for a new truck in # years. What amount should be set aside today at #%?",
+                "What is the 'discounted value' of a $#,### debt due in # months at #% compounded daily?",
+                "You want to give a $#,### gift in # years. What is the cost today if money earns #% annually?"
+            ] 
+        },
+        { 
+            type: "Ordinary Annuity FV", 
+            templates: [
+                "Deposit $### at the end of every month for # years at #% interest. Find the total.",
+                "A sinking fund requires $#,### at the end of each year for # years at #% interest.",
+                "You save $### from every bi-weekly paycheck (at the end) into an account earning #% for # years.",
+                "A company sets aside $#,### at the end of each quarter to pay a debt in # years.",
+                "Calculate the final balance of a 401k if $### is added at the end of each month for # years.",
+                "You put $### into a college fund at the end of every month for # years at #% compounding."
+            ] 
+        },
+        { 
+            type: "Annuity Due FV", 
+            templates: [
+                "Start saving $### at the beginning of every month starting today for # years.",
+                "Lease payments of $### are made at the start of each month into an interest-bearing account for # years.",
+                "You deposit $### on the first day of every quarter for # years at #% interest.",
+                "Beginning today, you invest $#,### annually for # years. What is the future value?",
+                "A parent puts $### into an account on the 1st of every month for # years. Find the balance.",
+                "To save for a wedding, you put $### in an account at the start of each month for # years."
+            ] 
+        },
+        { 
+            type: "Ordinary Annuity PV", 
+            templates: [
+                "You want to withdraw $#,### at the end of each month for # years of retirement. What total is needed now?",
+                "A lottery payout pays $##,### at the end of each year for # years. What's the cash value today?",
+                "A retirement pension offers $#,### per month for # years. Find the present value at #%.",
+                "A court settlement pays $#,### at the end of every quarter for # years. What is the lump sum worth?",
+                "How much must be in an account today to provide $### end-of-month stipends for # years?",
+                "Calculate the current value of an annuity paying $#,### annually (at the end) for # years."
+            ] 
+        },
+        { 
+            type: "Ordinary Annuity Pmt (FV)", 
+            templates: [
+                "To save $##,### in # years, what end-of-month deposit is required at #%?",
+                "Goal: $###,### for a house in # years. Find the required quarterly payment (at the end).",
+                "How much must a firm save at the end of each year to reach $###,### in # years?",
+                "To have $#,### for a vacation in # months, what monthly end-of-period payment is needed?",
+                "A city needs $#,###,### for a new park in # years. What is the annual sinking fund payment?",
+                "Find the periodic payment needed at the end of each month to accumulate $##,### in # years."
+            ] 
+        },
+        { 
+            type: "Ordinary Annuity Pmt (PV)", 
+            templates: [
+                "What is the monthly payment for a $##,### car loan at #% for # years?",
+                "A mortgage of $###,### at #% for 30 years. Find the monthly payment.",
+                "You finance a $#,### computer for # months at #%. Find the monthly installment.",
+                "Calculate the semi-annual payment on a $##,### student loan over # years.",
+                "A business borrows $##,### for equipment. Find the quarterly payment over # years.",
+                "If you borrow $#,### today to be paid back over # years, find the end-of-month payment."
+            ] 
+        }
+    ];
     ];
 
     let gameScenarios = [];
