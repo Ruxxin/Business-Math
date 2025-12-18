@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula Sorting Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --bg: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .scenario-box {
+            background: #eef2f3;
+            padding: 20px;
+            border-left: 5px solid var(--accent);
+            margin-bottom: 25px;
+            min-height: 80px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .buckets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .bucket {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .bucket:hover {
+            border-color: var(--accent);
+            background: #f0f7ff;
+        }
+
+        .bucket.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .bucket.wrong {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .stats {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover { background: #2980b9; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h2>Financial Formula Challenge</h2>
+    <p>Analyze the scenario and select the correct formula/category:</p>
+    
+    <div id="scenario" class="scenario-box">Loading scenario...</div>
+
+    <div class="buckets-grid" id="buckets">
+        </div>
+
+    <div class="stats">
+        <span>Score: <span id="score">0</span></span>
+        <button onclick="resetGame()">Restart Game</button>
+    </div>
+</div>
+
+<script>
+    const scenarios = [
+        { text: "You put $5,000 into a savings account once and want to know the balance after 5 years with 4% interest compounded monthly.", formula: "Compound FV" },
+        { text: "How much must you invest today to have $10,000 in 3 years if the rate is 5% compounded quarterly?", formula: "Compound PV" },
+        { text: "You deposit $200 at the end of every month into an account. How much will you have in 10 years?", formula: "Ordinary Annuity FV" },
+        { text: "You deposit $200 at the beginning of every month. How much is in the account after 10 years?", formula: "Annuity Due FV" },
+        { text: "You want to withdraw $1,500 every month for the next 20 years during retirement. How much do you need in the account now?", formula: "Ordinary Annuity PV" },
+        { text: "A lender charges you a flat 6% interest on a $1,000 loan for one year with no compounding.", formula: "Simple Interest" },
+        { text: "You want to save up $50,000 for a down payment in 5 years. How much should you deposit at the end of each month?", formula: "Ordinary Annuity Pmt (FV)" },
+        { text: "You take out a $250,000 mortgage. What are your monthly payments (made at the end of the month)?", formula: "Ordinary Annuity Pmt (PV)" }
+    ];
+
+    const formulaTypes = [
+        "Simple Interest", "Compound FV", "Compound PV", 
+        "Ordinary Annuity FV", "Annuity Due FV", 
+        "Ordinary Annuity PV", "Ordinary Annuity Pmt (FV)", "Ordinary Annuity Pmt (PV)"
+    ];
+
+    let currentScenarioIndex = 0;
+    let score = 0;
+
+    function initGame() {
+        const bucketContainer = document.getElementById('buckets');
+        bucketContainer.innerHTML = '';
+        formulaTypes.forEach(type => {
+            const div = document.createElement('div');
+            div.className = 'bucket';
+            div.innerText = type;
+            div.onclick = () => checkAnswer(type, div);
+            bucketContainer.appendChild(div);
+        });
+        showScenario();
+    }
+
+    function showScenario() {
+        if (currentScenarioIndex < scenarios.length) {
+            document.getElementById('scenario').innerText = scenarios[currentScenarioIndex].text;
+        } else {
+            document.getElementById('scenario').innerText = "🎉 Quiz Complete! You've mastered the formula types!";
+            document.getElementById('buckets').classList.add('hidden');
+        }
+    }
+
+    function checkAnswer(selectedType, element) {
+        const correctType = scenarios[currentScenarioIndex].formula;
+        
+        if (selectedType === correctType) {
+            element.classList.add('correct');
+            score++;
+            document.getElementById('score').innerText = score;
+            setTimeout(() => {
+                element.classList.remove('correct');
+                currentScenarioIndex++;
+                showScenario();
+            }, 800);
+        } else {
+            element.classList.add('wrong');
+            setTimeout(() => element.classList.remove('wrong'), 500);
+        }
+    }
+
+    function resetGame() {
+        currentScenarioIndex = 0;
+        score = 0;
+        document.getElementById('score').innerText = score;
+        document.getElementById('buckets').classList.remove('hidden');
+        initGame();
+    }
+
+    initGame();
+</script>
+
+</body>
+</html>
