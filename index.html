@@ -124,7 +124,54 @@
         { text: "You want to withdraw $1,500 every month for the next 20 years during retirement. How much do you need in the account now?", formula: "Ordinary Annuity PV" },
         { text: "A lender charges you a flat 6% interest on a $1,000 loan for one year with no compounding.", formula: "Simple Interest" },
         { text: "You want to save up $50,000 for a down payment in 5 years. How much should you deposit at the end of each month?", formula: "Ordinary Annuity Pmt (FV)" },
-        { text: "You take out a $250,000 mortgage. What are your monthly payments (made at the end of the month)?", formula: "Ordinary Annuity Pmt (PV)" }
+        { text: "You take out a $250,000 mortgage. What are your monthly payments (made at the end of the month)?", formula: "Ordinary Annuity Pmt (PV)" },
+        
+        // --- Simple Interest ---
+        { text: "A friend borrows $500 for textbooks and promises to pay you back $550 in two months without any compounding.", formula: "Simple Interest" },
+        { text: "Calculate the interest earned on a short-term $2,000 T-bill that pays 3% annual interest for 90 days.", formula: "Simple Interest" },
+        { text: "A pawn shop charges a flat 10% fee on a $100 loan held for 30 days.", formula: "Simple Interest" },
+        { text: "You buy a $1,000 certificate of deposit that pays non-compounding interest annually for 2 years.", formula: "Simple Interest" },
+    
+        // --- Compound Future Value (Lump Sum) ---
+        { text: "You deposit $10,000 into a high-yield account today and leave it untouched for 8 years at 4.5% compounded daily.", formula: "Compound FV" },
+        { text: "A 'set it and forget it' investment of $2,500 grows at 7% compounded semi-annually. What is it worth in 2040?", formula: "Compound FV" },
+        { text: "Inflation is 3% per year. If a candy bar costs $1.50 today, what will it cost in 10 years (compounded annually)?", formula: "Compound FV" },
+        { text: "You inherited $15,000 and put it in a mutual fund that averages 8% compounded monthly. What is the balance in 15 years?", formula: "Compound FV" },
+        { text: "A collector buys a vintage comic for $200; it appreciates at 12% per year compounded annually. Value in 5 years?", formula: "Compound FV" },
+    
+        // --- Compound Present Value (Lump Sum) ---
+        { text: "How much should parents invest now to have $40,000 for a child’s tuition in 12 years at 6% compounded monthly?", formula: "Compound PV" },
+        { text: "A business needs $100,000 to replace machinery in 4 years. What amount must be set aside today at 5% compounded quarterly?", formula: "Compound PV" },
+        { text: "What is the 'current value' of a $5,000 payment you are scheduled to receive 3 years from now, discounted at 4% compounded daily?", formula: "Compound PV" },
+        { text: "To have a $1 million 'nest egg' in 40 years, what single deposit is needed today at 9% compounded annually?", formula: "Compound PV" },
+    
+        // --- Ordinary Annuity FV (Savings/Sinking Fund) ---
+        { text: "You contribute $400 at the end of every month into a 401k. What is the total after 30 years at 7% interest?", formula: "Ordinary Annuity FV" },
+        { text: "A company puts $2,000 into a sinking fund at the end of every quarter to pay off a bond. Total after 5 years?", formula: "Ordinary Annuity FV" },
+        { text: "You save $50 from every bi-weekly paycheck (end of period) into an account earning 3% for 2 years.", formula: "Ordinary Annuity FV" },
+        { text: "A parent puts $100 into a child's savings account at the end of each month for 18 years at 4% interest.", formula: "Ordinary Annuity FV" },
+    
+        // --- Annuity Due FV (Savings starting NOW) ---
+        { text: "Starting today, you deposit $300 at the beginning of every month for 5 years at 6% interest.", formula: "Annuity Due FV" },
+        { text: "You set up an automatic transfer of $100 to happen on the 1st of every month (beginning of period) for 10 years.", formula: "Annuity Due FV" },
+        { text: "An insurance premium of $1,200 is paid at the start of every year for 20 years. What is the total value of these payments?", formula: "Annuity Due FV" },
+        { text: "To save for a trip, you put $200 in a jar on the first day of every month for a year at 2% compounded monthly.", formula: "Annuity Due FV" },
+    
+        // --- Ordinary Annuity PV (Retirement/Payouts) ---
+        { text: "A lottery prize pays $50,000 at the end of each year for 20 years. What is the equivalent cash-out value today?", formula: "Ordinary Annuity PV" },
+        { text: "You want to receive a $2,000 monthly check from your pension for 25 years. How much must be in the fund when you retire?", formula: "Ordinary Annuity PV" },
+        { text: "A structured settlement offers $1,000 monthly for 10 years. If the interest rate is 5%, what is this worth now?", formula: "Ordinary Annuity PV" },
+    
+        // --- Ordinary Annuity Pmt (Solving for Payment - FV) ---
+        { text: "You want to have $20,000 saved for a car in 4 years. How much should you save at the end of each month at 3%?", formula: "Ordinary Annuity Pmt (FV)" },
+        { text: "A corporation must accumulate $2 million in 10 years. What quarterly end-of-period deposit is required?", formula: "Ordinary Annuity Pmt (FV)" },
+        { text: "How much must a student save every month (at the end) to have $5,000 by graduation in 2 years?", formula: "Ordinary Annuity Pmt (FV)" },
+    
+        // --- Ordinary Annuity Pmt (Solving for Payment - PV/Loans) ---
+        { text: "You finance a $30,000 truck over 60 months at 5.9%. What is your monthly payment (due at the end of each month)?", formula: "Ordinary Annuity Pmt (PV)" },
+        { text: "What are the semi-annual payments on a $15,000 student loan to be paid off over 10 years at 4%?", formula: "Ordinary Annuity Pmt (PV)" },
+        { text: "You buy a $500,000 office building with a 20-year mortgage at 6.5%. Find the monthly payment.", formula: "Ordinary Annuity Pmt (PV)" },
+        { text: "If you borrow $5,000 for a deck repair at 8% for 3 years, what is the monthly installment?", formula: "Ordinary Annuity Pmt (PV)" }
     ];
 
     const formulaTypes = [
