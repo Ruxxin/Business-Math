@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casio fx-300ES Plus Emulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js"></script>
+    
+    <style>
+        :root {
+            --casio-body: #3d454d;
+            --casio-screen: #9eb29d;
+            --btn-num: #ececec;
+            --btn-func: #2e3133;
+            --btn-orange: #d35400;
+        }
+
+        body { background: #f0f0f0; display: flex; justify-content: center; padding-top: 30px; font-family: sans-serif; }
+        #calculator { background: var(--casio-body); width: 360px; padding: 25px; border-radius: 20px 20px 50px 50px; box-shadow: 0 15px 0 #2c3135; }
+        
+        #screen { 
+            background: var(--casio-screen); 
+            height: 110px; 
+            border-radius: 5px; 
+            border: 4px solid #222; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            margin-bottom: 20px;
+        }
+
+        #math-field { 
+            width: 100%; 
+            border: none !important; 
+            background: transparent !important; 
+            font-size: 1.3rem !important; 
+            color: #1a1a1a; 
+            height: 70px;
+            overflow-x: auto;
+        }
+
+        #result-display { text-align: right; font-size: 1.5rem; font-weight: bold; color: #1a1a1a; }
+
+        .keypad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        button { height: 40px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 3px #1a1a1a; }
+        button:active { transform: translateY(2px); box-shadow: 0 1px #1a1a1a; }
+        
+        .num { background: var(--btn-num); color: #000; font-size: 1.1rem; }
+        .func { background: var(--btn-func); color: #fff; font-size: 0.75rem; }
+        .orange { background: var(--btn-orange); color: #fff; }
+    </style>
+</head>
+<body>
+
+<div id="calculator">
+    <div id="screen">
+        <div id="math-field"></div>
+        <div id="result-display">0</div>
+    </div>
+
+    <div class="keypad">
+        <button class="func" onclick="writeMath('\\frac{}{}')">■/□</button>
+        <button class="func" onclick="writeMath('^{}')">xⁿ</button>
+        <button class="func" onclick="writeMath('\\sqrt{}')">√</button>
+        <button class="func" onclick="writeMath('(')">(</button>
+        <button class="func" onclick="writeMath(')')">)</button>
+
+        <button class="num" onclick="writeMath('7')">7</button>
+        <button class="num" onclick="writeMath('8')">8</button>
+        <button class="num" onclick="writeMath('9')">9</button>
+        <button class="orange" onclick="del()">DEL</button>
+        <button class="orange" onclick="reset()">AC</button>
+
+        <button class="num" onclick="writeMath('4')">4</button>
+        <button class="num" onclick="writeMath('5')">5</button>
+        <button class="num" onclick="writeMath('6')">6</button>
+        <button class="func" onclick="writeMath('\\cdot')">×</button>
+        <button class="func" onclick="writeMath('/')">÷</button>
+
+        <button class="num" onclick="writeMath('1')">1</button>
+        <button class="num" onclick="writeMath('2')">2</button>
+        <button class="num" onclick="writeMath('3')">3</button>
+        <button class="func" onclick="writeMath('+')">+</button>
+        <button class="func" onclick="writeMath('-')">−</button>
+
+        <button class="num" onclick="writeMath('0')">0</button>
+        <button class="num" onclick="writeMath('.')">.</button>
+        <button class="num" onclick="writeMath('10^{}')">x10ⁿ</button>
+        <button class="orange" style="grid-column: span 2" onclick="calculate()">=</button>
+    </div>
+</div>
+
+<script>
+    const MQ = MathQuill.getInterface(2);
+    const mathFieldSpan = document.getElementById('math-field');
+    const resultDisplay = document.getElementById('result-display');
+
+    const mathField = MQ.MathField(mathFieldSpan, {
+        spaceBehavesLikeTab: true,
+        autoCommands: 'pi sqrt theta',
+        handlers: {
+            enter: function() { calculate(); }
+        }
+    });
+
+    function writeMath(cmd) {
+        if(cmd === '/') mathField.cmd(cmd);
+        else mathField.write(cmd);
+        mathField.focus();
+    }
+
+    function del() { mathField.keystroke('Backspace'); }
+    function reset() { mathField.latex(''); resultDisplay.innerText = '0'; }
+
+    function calculate() {
+        let latex = mathField.latex();
+        if (!latex) return;
+
+        // The Translation Engine: Converts LaTeX to JS-readable Math
+        let expression = latex
+            .replace(/\\frac{([^}]*)}{([^}]*)}/g, "(($1)/($2))") // Fractions
+            .replace(/\\cdot/g, "*")                             // Multiplication dot
+            .replace(/\\times/g, "*")                            // Multiplication cross
+            .replace(/{}/g, "")                                  // Remove empty braces
+            .replace(/\^{([^}]*)}/g, "**($1)")                   // Exponents with braces
+            .replace(/\^([0-9a-zA-Z])/g, "**$1")                 // Simple exponents
+            .replace(/\\left\(/g, "(")                           // Parenthesis
+            .replace(/\\right\)/g, ")")
+            .replace(/\\sqrt{([^}]*)}/g, "Math.sqrt($1)")        // Square root
+            .replace(/\{/g, "(")                                 // Remaining braces to parens
+            .replace(/\}/g, ")");
+
+        try {
+            // Evaluates the translated string
+            let result = eval(expression);
+            
+            // Format for business: up to 4 decimal places
+            if (Math.abs(result) < 0.0000001) result = 0;
+            resultDisplay.innerText = Number.isInteger(result) ? result : result.toFixed(4);
+        } catch (e) {
+            console.error("Failed to parse:", expression);
+            resultDisplay.innerText = "Error";
+        }
+    }
+</script>
+
+</body>
+</html>
